@@ -1,0 +1,76 @@
+import mysql.connector
+
+# Connect to your MySQL database
+conn = mysql.connector.connect(
+    host="16.0.1000.6",
+    user="mohit",
+    password="Sh@rp",
+    database="CBLLAP3093"
+)
+
+# Create a cursor object to interact with the database
+cursor = conn.cursor()
+
+schema1="""
+CREATE SCHEMA IF NOT EXISTS EDUCATION"""
+cursor.execute(schema1)
+
+# Create the "students" table
+create_table_query = """
+CREATE TABLE IF NOT EXISTS students (
+    student_id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    age INT,
+    grade FLOAT
+)
+"""
+cursor.execute(create_table_query)
+
+# Insert a new student record
+insert_query = """
+INSERT INTO students (first_name, last_name, age, grade)
+VALUES ('Alice', 'Smith', 18, 95.5)
+"""
+cursor.execute(insert_query)
+
+# Commit the changes
+conn.commit()
+
+# Update the grade of the student with the first name "Alice"
+update_query = """
+UPDATE students
+SET grade = 97.0
+WHERE first_name = 'Alice'
+"""
+cursor.execute(update_query)
+
+# Commit the changes
+conn.commit()
+
+# Delete the student with the last name "Smith"
+delete_query = """
+DELETE FROM students
+WHERE last_name = 'Smith'
+"""
+cursor.execute(delete_query)
+
+# Commit the changes
+conn.commit()
+
+# Fetch and display all student records
+select_query = """
+SELECT * FROM students
+"""
+cursor.execute(select_query)
+
+# Fetch all records
+records = cursor.fetchall()
+
+# Display the records
+for record in records:
+    print(record)
+
+# Close the cursor and connection
+cursor.close()
+conn.close()
